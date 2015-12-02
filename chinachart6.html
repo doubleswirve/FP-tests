@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <style type="text/css" media="screen">
+
+	@font-face {
+		font-family: 'solidoblack';
+		src: url('fonts/solido-black-webfont-webfont.eot');
+		src: url('fonts/solido-black-webfont-webfont.eot?#iefix') format('embedded-opentype'), url('..fonts/solido-black-webfont-webfont.svg') format('svg'), url('fonts/solido-black-webfont-webfont.woff') format('woff'), url('fonts/solido-black-webfont-webfont.ttf') format('truetype');
+		font-weight: normal;
+		font-style: normal;
+	}
+    </style>
+	<script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+['Reponse', 'Number who responded'],
+          ['Business/finance',      52],
+		  ['Public sector', 14],
+		  ['Science/technology',     72],
+          ['Media/communications',  20],
+		  ['Health and human services', 10],
+		  ['Eduation', 19]
+        ]);
+
+        var options = {
+		  title: "What industry do you plan to enter after graduation?",
+		  colors: ['#fb4501', '#FD940C', '#d5d5d5', '#b5b5b5', '#757575', '#333'],
+		  //backgroundColor: 'transparent',
+          pieHole: 0.4,
+		  pieSliceBorderColor: '#333',
+		  pieSliceText: 'value',
+		  fontName: 'solidoblack',
+		  legend: {position: 'bottom'},
+		  titleTextStyle: {fontSize: 18}
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="donutchart" style="width: 100%; height: auto;"></div>
+  </body>
+</html>
