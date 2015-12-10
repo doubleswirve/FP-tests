@@ -1,12 +1,253 @@
-<div id="hacker-list">
-  <ul class="list">
-    <li>
-       <h3 class="name">Jonny</h3>
-       <p class="city">Stockholm</p>
-    </li>
-    <li>
-      <h3 class="name">Jonas</h3>
-      <p class="city">Berlin</p>
-    </li>
-  </ul>
-</div>
+<html>
+<head>
+  <script src="list.js"></script>
+  <style type="text/css">
+
+    @font-face {
+      font-family: 'solido_medium';
+      src: url('fonts/solido-medium-webfont.eot');
+      src: url('fonts/solido-medium-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/solido-medium-webfont.svg') format('svg'), url('fonts/solido-medium-webfont.woff') format('woff'), url('fonts/solido-medium-webfont.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'solido_bold';
+      src: url('fonts/solido-bold-webfont.eot');
+      src: url('fonts/solido-bold-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/solido-bold-webfont.svg') format('svg'), url('fonts/solido-bold-webfont.woff') format('woff'), url('fonts/solido-bold-webfont.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    .list li {
+      font-family: 'solido_medium';
+    }
+
+    .size {
+      display:none;
+    }
+
+    .list, input, .sort {
+      font-family: "solido_medium", sans-serif;
+    }
+    td {
+      padding:10px;
+      border:solid 1px #eee;
+    }
+
+    input {
+      border:solid 1px #ccc;
+      border-radius: 5px;
+      padding:7px 14px;
+      margin-bottom:10px
+    }
+    input:focus {
+      outline:none;
+      border-color:#aaa;
+    }
+    .sort {
+      padding:8px 30px;
+      border-radius: 1px;
+      border:none;
+      display:inline-block;
+      color:#fff;
+      text-decoration: none;
+      background-color: #eb2431;
+      height:30px;
+    }
+    .sort:hover {
+      text-decoration: none;
+      background-color:#B81C26;
+    }
+    .sort:focus {
+      outline:none;
+    }
+    .sort:after {
+      display:inline-block;
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      content:"";
+      position: relative;
+      top:-10px;
+      right:-5px;
+    }
+    .sort.asc:after {
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid #fff;
+      content:"";
+      position: relative;
+      top:4px;
+      right:-5px;
+    }
+    .sort.desc:after {
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 5px solid #fff;
+      content:"";
+      position: relative;
+      top:-4px;
+      right:-5px;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="users">
+    <input class="search" placeholder="Search" />
+    <button class="sort" data-sort="students">
+      Sort by students
+    </button>
+    <button class="sort" data-sort="size">
+      Sort by campus size
+    </button>
+    <table>
+      <!-- IMPORTANT, class="list" have to be at tbody -->
+      <tbody class="list">
+        <tr>
+          <td class="name">University of Illinois</td>
+          <td class="students">7982</td>
+          <td class="size">7</td>
+        </tr>
+        <tr>
+          <td class="name">University of Southern California</td>
+          <td class="students">7917</td>
+          <td class="size">6</td>
+        </tr>
+        <tr>
+          <td class="name">Purdue University</td>
+          <td class="students">7428</td>
+          <td class="size">5</td>
+        </tr>
+        <tr>
+          <td class="name">Northeastern University</td>
+          <td class="students">7342</td>
+          <td class="size">2</td>
+        </tr>
+        <tr>
+          <td class="name">Columbia University</td>
+          <td class="students">7063</td>
+          <td class="size">4</td>
+        </tr>
+        <tr>
+          <td class="name">Michigan State University</td>
+          <td class="students">6642</td>
+          <td class="size">13</td>
+        </tr>
+        <tr>
+          <td class="name">The Ohio State University</td>
+          <td class="students">6134</td>
+          <td class="size">19</td>
+        </tr>
+        <tr>
+          <td class="name">University of California, Los Angeles</td>
+          <td class="students">5740</td>
+          <td class="size">11</td>
+        </tr>
+        <tr>
+          <td class="name">Indiana University</td>
+          <td class="students">5563</td>
+          <td class="size">15</td>
+        </tr>
+        <tr>
+          <td class="name">University of California at Berkeley</td>
+          <td class="students">5543</td>
+          <td class="size">10</td>
+        </tr>
+        <tr>
+          <td class="name">New York University</td>
+          <td class="students">5466</td>
+          <td class="size">20</td>
+        </tr>
+        <tr>
+          <td class="name">The Pennsylvania State University</td>
+          <td class="students">5157</td>
+          <td class="size">17</td>
+        </tr>
+        <tr>
+          <td class="name">University of Minnesota</td>
+          <td class="students">4967</td>
+          <td class="size">24</td>
+        </tr>
+        <tr>
+          <td class="name">University of Washington</td>
+          <td class="students">4755</td>
+          <td class="size">21</td>
+        </tr>
+        <tr>
+          <td class="name">Arizona State University</td>
+          <td class="students">4725</td>
+          <td class="size">22</td>
+        </tr>
+        <tr>
+          <td class="name">University of Michigan</td>
+          <td class="students">4447</td>
+          <td class="size">18</td>
+        </tr>
+        <tr>
+          <td class="name">Boston University</td>
+          <td class="students">4362</td>
+          <td class="size">16</td>
+        </tr>
+        <tr>
+          <td class="name">Illinois Institute of Technology</td>
+          <td class="students">3957</td>
+          <td class="size">1</td>
+        </tr>
+        <tr>
+          <td class="name">Rutgers, The State University of New Jersey</td>
+          <td class="students">3842</td>
+          <td class="size">25</td>
+        </tr>
+        <tr>
+          <td class="name">The University of Texas at Dallas</td>
+          <td class="students">3791</td>
+          <td class="size">9</td>
+        </tr>
+        <tr>
+          <td class="name">University of Wisconsin-Madison</td>
+          <td class="students">3760</td>
+          <td class="size">23</td>
+        </tr>
+        <tr>
+          <td class="name">University of California San Diego</td>
+          <td class="students">3646</td>
+          <td class="size">14</td>
+        </tr>
+        <tr>
+          <td class="name">Carnegie Mellon University</td>
+          <td class="students">3634</td>
+          <td class="size">3</td>
+        </tr>
+        <tr>
+          <td class="name">State University of New York at Stony Brook</td>
+          <td class="students">3578</td>
+          <td class="size">12</td>
+        </tr>
+        <tr>
+          <td class="name">Syracuse University</td>
+          <td class="students">3534</td>
+          <td class="size">8</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <script>
+
+    var options = {
+      valueNames: [ 'students', 'size' ]
+    };
+
+    var userList = new List('users', options);
+
+  </script>
+</body>
+</html>
