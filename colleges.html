@@ -26,7 +26,7 @@
       display:none;
     }
 
-    .list, input, .sort {
+    tr, .list, input, .sort {
       font-family: "solido_medium", sans-serif;
     }
     td {
@@ -113,6 +113,11 @@
       vs. student body
     </button>
     <table>
+      <tr>
+        <td>Rank (by # of visas)
+        <td>School</td>
+        <td>Number of F-1 visas</td>
+      </tr>
       <!-- IMPORTANT, class="list" have to be at tbody -->
       <tbody class="list">
         <tr>
@@ -273,7 +278,7 @@
   <script>
 
     var options = {
-      valueNames: [ 'students', 'size' ]
+      valueNames: [ 'name', 'students', 'size' ]
     };
 
     var userList = new List('users', options);
