@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Snazzy Maps Super Simple Example</title>
+
+        <style type="text/css">
+            /* Set a size for our map container, the Google Map will take up 100% of this container */
+            #map {
+                width: 750px;
+                height: 600px;
+            }
+
+            .labels {
+              width:50px;
+            }
+
+            @font-face {
+          		font-family: 'solido_condensedlight';
+          		src: url('fonts/solidocondensed-light-webfont.eot');
+          		src: url('fonts/solidocondensed-light-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/solidocondensed-light-webfont.svg') format('svg'), url('fonts/solidocondensed-light-webfont.woff') format('woff'), url('fonts/solidocondensed-light-webfont.ttf') format('truetype');
+          		font-weight: normal;
+          		font-style: normal;
+          	}
+            @font-face {
+            	font-family: 'solido_medium';
+            	src: url('fonts/solido-medium-webfont.eot');
+            	src: url('fonts/solido-medium-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/solido-medium-webfont.svg') format('svg'), url('fonts/solido-medium-webfont.woff') format('woff'), url('fonts/solido-medium-webfont.ttf') format('truetype');
+            	font-weight: normal;
+            	font-style: normal;
+            }
+          	@font-face {
+          		font-family: 'solidoblack';
+          		src: url('fonts/solido-black-webfont-webfont.eot');
+          		src: url('fonts/solido-black-webfont-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/solido-black-webfont-webfont.svg') format('svg'), url('fonts/solido-black-webfont-webfont.woff') format('woff'), url('fonts/solido-black-webfont-webfont.ttf') format('truetype');
+          		font-weight: normal;
+          		font-style: normal;
+          	}
+
+        </style>
+
+        <!--
+            You need to include this script tag on any page that has a Google Map.
+
+            The following script tag will work when opening this example locally on your computer.
+            But if you use this on a localhost server or a live website you will need to include an API key.
+            Sign up for one here (it's free for small usage):
+                https://developers.google.com/maps/documentation/javascript/tutorial#api_key
+
+            After you sign up, use the following script tag with YOUR_GOOGLE_API_KEY replaced with your actual key. -->
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YAIzaSyBnbnW7Yhrxqn-rXjZPbDtFwkD_Kq2ZxEk&sensor=false"></script>
+      <!--  <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js"></script> -->
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <!-- <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/maplabel/src/maplabel.js"></script> -->
+        <script src="maplabel/src/maplabel.js"></script>
+
+<div id="map_canvas"></div>
+
+        <script type="text/javascript">
+            // When the window has finished loading create our google map below
+            google.maps.event.addDomListener(window, 'load', init);
+
+
+            function init() {
+                // Basic options for a simple Google Map
+                // For more options see: https://developers.google.com/maps/documentation/javascript/reference#MapOptions
+
+                var mapOptions = {
+
+                    mapTypeControl: false,
+                    disableDoubleClickZoom: true,
+                    draggable: false,
+                    scrollwheel: false,
+                    zoomControl: false,
+
+                    // How zoomed in you want the map to start at (always required)
+                    zoom: 4,
+
+                    // The latitude and longitude to center the map (always required)
+                    center: new google.maps.LatLng(36.6192776, 48.9080903), // Middle East
+
+                    // How you would like to style the map.
+                    // This is where you would paste any style found on Snazzy Maps.
+                    styles: [{"featureType":"landscape","elementType":"geometry","stylers":[{"hue":"#7d7d7d"},{"saturation":-100},{"lightness":36},{"visibility":"on"}]},{"featureType":"administrative.country","elementType":"geometry.stroke","stylers":[{"color":"#ffffff"},{"weight":"2.00"}]},{"featureType":"road","elementType":"labels","stylers":[{"hue":"#000000"},{"saturation":-100},{"lightness":-100},{"visibility":"off"}]},{"featureType":"poi","elementType":"all","stylers":[{"hue":"#000000"},{"saturation":-100},{"lightness":-100},{"visibility":"off"}]},{"featureType":"road","elementType":"geometry","stylers":[{"hue":"#000000"},{"saturation":-100},{"lightness":-100},{"visibility":"simplified"}]},{"featureType":"administrative","elementType":"labels","stylers":[{"hue":"#000000"},{"saturation":0},{"lightness":-100},{"visibility":"off"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"hue":"#000000"},{"saturation":0},{"lightness":-100},{"visibility":"on"}]},{"featureType":"transit","elementType":"labels","stylers":[{"hue":"#000000"},{"saturation":0},{"lightness":-100},{"visibility":"off"}]},{"featureType":"water","elementType":"labels","stylers":[{"hue":"#000000"},{"saturation":-100},{"lightness":-100},{"visibility":"off"}]},{"featureType":"water","elementType":"geometry","stylers":[{"hue":"#ffffff"},{"saturation":-100},{"lightness":100},{"visibility":"on"}]},{"featureType":"landscape.natural","elementType":"all","stylers":[{"hue":"#7d7d7d"},{"saturation":-100},{"lightness":-8},{"visibility":"off"}]}]
+
+                  };
+
+                // Get the HTML DOM element that will contain your map
+                // We are using a div with id=map seen below in the body
+
+                var mapElement = document.getElementById("map");
+
+                // Create the Google Map using our element and options defined above
+                var map = new google.maps.Map(mapElement, mapOptions);
+
+                // Add FusionTablesLayer
+
+                var layer = new google.maps.FusionTablesLayer({
+                  query: {
+                    select: "Geometry",
+                    from: "149hT65K4RMhGTjips9KBT9eOaGD4mvp3PbG9FAVt"
+                  },
+                  options: {
+                      suppressInfoWindows: true
+                  },
+                  styles: [{
+                    polygonOptions: {
+                      fillColor: "#d1d1d1",
+                      fillOpacity: 0.9,
+                      strokeColor: "#ffffff",
+                      strokeWeight: 2,
+                      zIndex: 1000
+                    }
+                    }]
+                });
+                layer.setMap(map);
+
+                var guidelineLebanon = [
+                  {lat: 38.654721, lng: 22.862285},
+                  {lat: 34.254721, lng: 35.862285}
+                ];
+                var lebanonPath = new google.maps.Polyline({
+                  path: guidelineLebanon,
+                  strokeColor: '#000000',
+                  strokeOpacity: 1.0,
+                  strokeWeight: 1
+                });
+
+                lebanonPath.setMap(map);
+
+                var guidelineIsrael = [
+                  {lat: 35.246051, lng: 20.851612},
+                  {lat: 32.546051, lng: 34.562285}
+                ];
+                var israelPath = new google.maps.Polyline({
+                  path: guidelineIsrael,
+                  strokeColor: '#000000',
+                  strokeOpacity: 1.0,
+                  strokeWeight: 1
+                });
+
+                israelPath.setMap(map);
+
+                var guidelinePalestine = [
+                  {lat: 31.346051, lng: 32.851612},
+                  {lat: 31.946051, lng: 35.062285}
+                ];
+                var palestinePath = new google.maps.Polyline({
+                  path: guidelinePalestine,
+                  strokeColor: '#000000',
+                  strokeOpacity: 1.0,
+                  strokeWeight: 1
+                });
+
+                palestinePath.setMap(map);
+
+                var guidelineJordan = [
+                  {lat: 19.446051, lng: 35.851612},
+                  {lat: 29.546051, lng: 36.062285}
+                ];
+                var jordanPath = new google.maps.Polyline({
+                  path: guidelineJordan,
+                  strokeColor: '#000000',
+                  strokeOpacity: 1.0,
+                  strokeWeight: 1
+                });
+
+                jordanPath.setMap(map);
+
+                //Labels
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solidoblack",
+                    fontColor: "#ee2431",
+                    fontSize: 16,
+                    text: "DON’T SPIT OUT GRAPE PEELS",
+                    textWidth: 200,
+                    position: new google.maps.LatLng(43.315407, 43.356892),
+                    map: map,
+                    strokeWeight: 0,
+                    labelClass: "labels",
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solido_medium",
+                    fontColor: "#000000",
+                    fontSize: 12,
+                    text: "GEORGIA",
+                    position: new google.maps.LatLng(42.015407, 43.356892),
+                    map: map,
+                    align: 'center',
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solidoblack",
+                    fontColor: "#ee2431",
+                    fontSize: 16,
+                    text: "ATTACK (RAID) FRANCE",
+                    textWidth: 200,
+                    position: new google.maps.LatLng(36.802075, 38.996815),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solido_medium",
+                    fontColor: "#000000",
+                    fontSize: 12,
+                    text: "SYRIA",
+                    position: new google.maps.LatLng(35.202075, 38.996815),
+                    map: map,
+                    align: 'center',
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solidoblack",
+                    fontColor: "#ee2431",
+                    fontSize: 16,
+                    text: "HAS CHRISTIANS",
+                    position: new google.maps.LatLng(40.854721, 22.862285),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solido_medium",
+                    fontColor: "#000000",
+                    fontSize: 12,
+                    text: "LEBANON",
+                    position: new google.maps.LatLng(39.454721, 22.862285),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solidoblack",
+                    fontColor: "#ee2431",
+                    fontSize: 16,
+                    text: "NOT AFRAID OF AMERICA",
+                    position: new google.maps.LatLng(34.427908, 53.088046),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solido_medium",
+                    fontColor: "#000000",
+                    fontSize: 12,
+                    text: "IRAN",
+                    position: new google.maps.LatLng(32.827908, 53.088046),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solidoblack",
+                    fontColor: "#ee2431",
+                    fontSize: 16,
+                    text: "SO CHAOTIC",
+                    position: new google.maps.LatLng(33.223191, 43.679291),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solido_medium",
+                    fontColor: "#000000",
+                    fontSize: 12,
+                    text: "IRAQ",
+                    position: new google.maps.LatLng(31.623191, 43.679291),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solidoblack",
+                    fontColor: "#ee2431",
+                    fontSize: 16,
+                    text: "PRETTY PEOPLE",
+                    position: new google.maps.LatLng(18.746051, 35.851612),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solido_medium",
+                    fontColor: "#000000",
+                    fontSize: 12,
+                    text: "JORDAN",
+                    position: new google.maps.LatLng(17.146051, 35.851612),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solidoblack",
+                    fontColor: "#ee2431",
+                    fontSize: 16,
+                    text: "STRONG",
+                    position: new google.maps.LatLng(36.546051, 18.851612),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solido_medium",
+                    fontColor: "#000000",
+                    fontSize: 12,
+                    text: "ISRAEL",
+                    position: new google.maps.LatLng(35.046051, 18.851612),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solidoblack",
+                    fontColor: "#ee2431",
+                    fontSize: 16,
+                    text: "WHY DOESN’T IT FORM A COUNTRY?",
+                    position: new google.maps.LatLng(30.746051, 27.851612),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solido_medium",
+                    fontColor: "#000000",
+                    fontSize: 12,
+                    text: "PALESTINE",
+                    position: new google.maps.LatLng(29.146051, 27.851612),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solidoblack",
+                    fontColor: "#ee2431",
+                    fontSize: 16,
+                    text: "PUTS BEDS ON ROOFS",
+                    position: new google.maps.LatLng(23.885942, 45.079162),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solido_medium",
+                    fontColor: "#000000",
+                    fontSize: 12,
+                    text: "SAUDI ARABIA",
+                    position: new google.maps.LatLng(22.285942, 45.079162),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solidoblack",
+                    fontColor: "#ee2431",
+                    fontSize: 16,
+                    text: "ABLE TO HOST WORLD CUP",
+                    position: new google.maps.LatLng(27.354826, 53.183884),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solido_medium",
+                    fontColor: "#000000",
+                    fontSize: 12,
+                    text: "QATAR",
+                    position: new google.maps.LatLng(25.754826, 53.183884),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solidoblack",
+                    fontColor: "#ee2431",
+                    fontSize: 16,
+                    text: "SO RICH",
+                    position: new google.maps.LatLng(23.424076, 58.847818),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solido_medium",
+                    fontColor: "#000000",
+                    fontSize: 12,
+                    text: "UNITED ARAB EMIRATES",
+                    position: new google.maps.LatLng(21.824076, 58.847818),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solidoblack",
+                    fontColor: "#ee2431",
+                    fontSize: 16,
+                    text: "EVACUATED",
+                    position: new google.maps.LatLng(16.552727, 48.516388),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solido_medium",
+                    fontColor: "#000000",
+                    fontSize: 12,
+                    text: "YEMEN",
+                    position: new google.maps.LatLng(14.952727, 48.516388),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solidoblack",
+                    fontColor: "#ee2431",
+                    fontSize: 14,
+                    text: "NOT IN SHANGHAI COOPERATION ORGANIZATION",
+                    position: new google.maps.LatLng(40.469719, 57.556278),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solido_medium",
+                    fontColor: "#000000",
+                    fontSize: 12,
+                    text: "TURKMENISTAN",
+                    position: new google.maps.LatLng(39.169719, 57.556278),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solidoblack",
+                    fontColor: "#ee2431",
+                    fontSize: 14,
+                    text: "DOESN’T GIVE INVITIATION LETTERS TO CHINESE",
+                    position: new google.maps.LatLng(44.877491, 58.585262),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solido_medium",
+                    fontColor: "#000000",
+                    fontSize: 12,
+                    text: "UZBEKISTAN",
+                    position: new google.maps.LatLng(43.577491, 58.585262),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solidoblack",
+                    fontColor: "#ee2431",
+                    fontSize: 16,
+                    text: "JOINS EUROPEAN FOOTBALL LEAGUE",
+                    position: new google.maps.LatLng(48.019573, 66.923684),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solido_medium",
+                    fontColor: "#000000",
+                    fontSize: 12,
+                    text: "KAZAKHSTAN",
+                    position: new google.maps.LatLng(46.719573, 66.923684),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solidoblack",
+                    fontColor: "#ee2431",
+                    fontSize: 16,
+                    text: "HAS EARTHQUAKES",
+                    position: new google.maps.LatLng(38.861034, 71.276093),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solido_medium",
+                    fontColor: "#000000",
+                    fontSize: 12,
+                    text: "TAKIJISTAN",
+                    position: new google.maps.LatLng(37.261034, 71.276093),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solidoblack",
+                    fontColor: "#ee2431",
+                    fontSize: 16,
+                    text: "CAN GROW DRUGS",
+                    position: new google.maps.LatLng(34.63911, 67.709953),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solido_medium",
+                    fontColor: "#000000",
+                    fontSize: 12,
+                    text: "AFGHANISTAN",
+                    position: new google.maps.LatLng(33.03911, 67.709953),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solidoblack",
+                    fontColor: "#ee2431",
+                    fontSize: 16,
+                    text: "GOOD TO CHINA",
+                    position: new google.maps.LatLng(30.375321, 69.345116),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+                var mapLabel = new MapLabel({
+                    fontFamily: "solido_medium",
+                    fontColor: "#000000",
+                    fontSize: 12,
+                    text: "PAKISTAN",
+                    position: new google.maps.LatLng(28.775321, 69.345116),
+                    map: map,
+                    strokeWeight: 0,
+                    zIndex: 9999
+                });
+
+              }
+
+
+
+        </script>
+    </head>
+    <body>
+        <!-- The element that will contain our Google Map. This is used in both the Javascript and CSS above. -->
+        <div id="map"></div>
+    </body>
+</html>

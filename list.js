@@ -1104,14 +1104,14 @@ module.exports = function(list) {
                 if (getAttribute(btn, 'data-sort') !== options.valueName) {
                     continue;
                 }
-                var predefinedOrder = getAttribute(btn, 'data-order');
+              /*  var predefinedOrder = getAttribute(btn, 'data-order');
                 if (predefinedOrder == "asc" || predefinedOrder == "desc") {
                     if (predefinedOrder == options.order) {
                         classes(btn).add(options.order);
                     }
                 } else {
                     classes(btn).add(options.order);
-                }
+                } */
             }
         }
     };
