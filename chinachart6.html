@@ -16,18 +16,21 @@
       google.setOnLoadCallback(drawChart);
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-['Reponse', 'Number who responded'],
-          ['Business/finance',      52],
-		  ['Public sector', 14],
-		  ['Science/technology',     72],
-          ['Media/communications',  20],
-		  ['Health and human services', 10],
-		  ['Eduation', 19]
+['School', 'Students'],
+          ['Public',      2355],
+		  ['Private Secular', 19474],
+		  ['Catholic',     14487],
+          ['Evangelical Christian',  11538],
+		  ['Lutheran', 1392],
+		  ['Episcopal', 1072],
+      ['Adventist', 893],
+      ['Quaker', 433],
+      ['Other Religious', 703]
         ]);
 
         var options = {
-		  title: "What industry do you plan to enter after graduation?",
-		  colors: ['#fb4501', '#FD940C', '#d5d5d5', '#b5b5b5', '#757575', '#333'],
+		  title: "Chinese Students in U.S. High Schools: Where They Go (By F-1 Visa Issuances)",
+		  colors: ['#f16d75', '#ee2431', '#6E1117', '#FD940C', '#6E3236', '#797979', '#885C4b', '#adadad', '#333333'],
 		  //backgroundColor: 'transparent',
           pieHole: 0.4,
 		  pieSliceBorderColor: '#333',
