@@ -30,43 +30,55 @@
       google.charts.setOnLoadCallback(drawLineColors);
       function drawLineColors() {
       var data = new google.visualization.DataTable();
-      data.addColumn('number', 'X');
+      data.addColumn('date', 'CONTINENT');
       data.addColumn('number', 'ASIA');
       data.addColumn('number', 'EUROPE');
       data.addColumn('number', 'MULTICONTINENT/OTHER');
       data.addColumn('number', 'NORTH AMERICA');
 
       data.addRows([
-        [1989, 0, 0, 0, .0007],[1990, 0, 0, 0, 0.0014],[1991, 0, 0, 0, 0.0057],[1992, 0, 0.0020, 0, 0.0093],[1993, 0.0096, .0102, 0, .0221],
-        [1994, 0, .0225, 0, .0193],
-        [1995, .0288, .0205, .0390, .0364],[1996, 0, .0287, .0130, .0257],[1997, .0288, .0389, .0390, .0407],[1998, .0096, .0328, 0, .0364],[1999, 0, .0410, .0649, .0657],
-        [2000, .0192, .0410, .0390, .0507],
-        [2001, .0192, .0635, .0260, .0521],[2002, .0096, .0820, .0649, .0371],[2003, .0096, .0512, .0260, .0407],[2004, .0192, .0553, .0519, .0486],
-        [2005, .0385, .0615, .0909, .0507],[2006, .0481, .0594, .0909, .0543],
-        [2007, .0385, .0389, .0130, .0471],[2008, .1154, .0717, .0390, .0500],[2009, .0288, .0389, 0, .0421],[2010, .0192, .0389, .0390, .0486],[2011, .0385, .0430, .0779, .0400],
-        [2012, .0865, .0594, .0779, .0407], [2013, .0769, .0471, .0390, .0621],[2014, .2019, .0369, .0909, .0600],[2015, .1538, .0143, .0779, .0114]
+        [new Date("1989"), 0, 0, 0, .0007],[new Date("1990"), 0, 0, 0, 0.0014],[new Date("1991"), 0, 0, 0, 0.0057],[new Date("1992"), 0, 0.0020, 0, 0.0093],
+        [new Date("1993"), 0.0096, .0102, 0, .0221],[new Date("1994"), 0, .0225, 0, .0193],[new Date("1995"), .0288, .0205, .0390, .0364],
+        [new Date("1996"), 0, .0287, .0130, .0257],[new Date("1997"), .0288, .0389, .0390, .0407],[new Date("1998"), .0096, .0328, 0, .0364],
+        [new Date("1999"), 0, .0410, .0649, .0657],[new Date("2000"), .0192, .0410, .0390, .0507],[new Date("2001"), .0192, .0635, .0260, .0521],
+        [new Date("2002"), .0096, .0820, .0649, .0371],[new Date("2003"), .0096, .0512, .0260, .0407],[new Date("2004"), .0192, .0553, .0519, .0486],
+        [new Date("2005"), .0385, .0615, .0909, .0507],[new Date("2006"), .0481, .0594, .0909, .0543],[new Date("2007"), .0385, .0389, .0130, .0471],
+        [new Date("2008"), .1154, .0717, .0390, .0500],[new Date("2009"), .0288, .0389, 0, .0421],[new Date("2010"), .0192, .0389, .0390, .0486],
+        [new Date("2011"), .0385, .0430, .0779, .0400],[new Date("2012"), .0865, .0594, .0779, .0407], [new Date("2013"), .0769, .0471, .0390, .0621],
+        [new Date("2014"), .2019, .0369, .0909, .0600],[new Date("2015"), .1538, .0143, .0779, .0114]
       ]);
 
         var options = {
 
-		  colors: ['#f16d75', '#ee2431', '#6E1117', '#FD940C'],
+		  colors: ['#2aa448', '#4392be', '#6df18e', '#f16d75'],
 		  fontName: 'solido_medium',
+      fontSize: 11,
       hAxis: {
-        format: '####',
+        format:'y',
         gridlines: {
           color: '#fff',
           count: 27
-
-        },
-        textStyle: {fontSize: 11}
+        }
       },
 		  legend: {position: 'top', alignment: 'center'},
       vAxis: {
           format: 'percent',
           ticks: [.05, .1, .15, .2],
-          title: 'Annual proportion of gene therapy trials, by continent'
+          title: 'ANNUAL PROPORTION OF GENE THERAPY TRIALS, BY CONTINENT (WITH KNOWN INITIATION DATES)',
+          titleTextStyle: {fontName: 'solido_bold'}
         }
         };
+
+        var formatter = new google.visualization.NumberFormat({pattern:'#,###.##%'});
+        formatter.format(data, 1);
+        formatter.format(data, 2);
+        formatter.format(data, 3);
+        formatter.format(data, 4);
+
+        var date_formatter = new google.visualization.DateFormat({
+            pattern: "yyyy"
+        });
+        date_formatter.format(data, 0);
 
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
         chart.draw(data, options);
